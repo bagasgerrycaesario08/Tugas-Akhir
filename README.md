@@ -4,7 +4,7 @@
 
 - Ketentuan :
   - Name and tags : Tugas Akhir
-    <img src="1.png" style="width:80%"/>
+    ![](ss/1.png)
   - OS Images : Ubuntu Server 22.04 LTS 64 bit
     <img src="2.png" style="width:80%"/>
   - Instance type : t2.medium
