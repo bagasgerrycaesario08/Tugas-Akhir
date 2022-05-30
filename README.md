@@ -1,2 +1,4 @@
 # Tugas-Akhir
-Tugas Akhir Ardsitektur Jaringan Terkini
+Tugas Akhir Arsitektur Jaringan Terkini
+Bagas Gerry Caesario
+195150307111049
