@@ -6,16 +6,16 @@
   - Name and tags : Tugas Akhir
     ![](ss/1.png)
   - OS Images : Ubuntu Server 22.04 LTS 64 bit
-    <img src="2.png" style="width:80%"/>
+    ![](ss/2.png)
   - Instance type : t2.medium
-    <img src="3.png" style="width:80%"/>
+    ![](ss/3.png)
   - Key pair : vockey
-    <img src="4.png" style="width:80%"/>
+    ![](ss/4.png)
   - Edit Network settings : allow SSH, allow HTTP, allow HTTPS, allow TCP port 8080, allow TCP port 8081
-    <img src="5.png" style="width:80%"/>
-    <img src="6.png" style="width:80%"/>
+    ![](ss/5.png)
+    ![](ss/6.png)
   - Configure storage : 30 GiB, gp3
-    <img src="7.png" style="width:80%"/>
+    ![](ss/7.png)
 
 ## 1. Langkah Pertama Lakukan Update
 
