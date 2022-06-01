@@ -182,6 +182,27 @@ class MyTopo( Topo ):
 topos = { 'mytopo': ( lambda: MyTopo() ) }
 ```
 
+- Jalankan mininet tanpa controller menggunakan custom topo yang anda sudah buat dengan perintah
+
+```
+sudo mn --controller=none --custom custom_topo_2sw2h.py --topo mytopo --mac --arp
+```
+
+- Setelah masuk ke Mininet Buat flow agar h1 dapat terhubung dengan h2
+
+```
+mininet> sh ovs-ofctl add-flow s1 -O OpenFlow13 "in_port=1,action=output:2"
+mininet> sh ovs-ofctl add-flow s1 -O OpenFlow13 "in_port=2,action=output:1"
+mininet> sh ovs-ofctl add-flow s2 -O OpenFlow13 "in_port=1,action=output:2"
+mininet> sh ovs-ofctl add-flow s2 -O OpenFlow13 "in_port=2,action=output:1"
+```
+
+- Uji koneksi agar h1 dengan h2
+
+```
+mininet> h1 ping -c2 h2
+```
+
 - ![](ss/10.png)
 
 ### 3. Membuat Custom Topologi 3 switch dan 6 host
@@ -241,6 +262,12 @@ class MyTopo( Topo ):
      self.addLink(s3, h5)
      self.addLink(s3, h6)
 topos = { 'mytopo': ( lambda: MyTopo() ) }
+```
+
+- Jalankan mininet tanpa controller menggunakan custom topo yang anda sudah buat dengan perintah
+
+```
+sudo mn --controller=none --custom custom_topo_3sw6h.py --topo mytopo --mac --arp
 ```
 
 - ![](ss/11.png)
