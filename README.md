@@ -1,6 +1,6 @@
 # Tugas-Akhir Arsitektur Jaringan Terkini
 
-## Membuat EC2 Instance di AWS Academy
+## A. Membuat EC2 Instance di AWS Academy
 
 - Ketentuan :
   - Name and tags : Tugas Akhir
@@ -17,7 +17,7 @@
   - Configure storage : 30 GiB, gp3
     - ![](ss/7.png)
 
-## 1. Langkah Pertama Lakukan Update
+### 1. Langkah Pertama Lakukan Update
 
 - Lakukan update dan upgrade dengan perintah :
 
@@ -25,7 +25,7 @@
 sudo apt -yy update && sudo apt -yy upgrade
 ```
 
-## 2. Instalasi Mininet + OpenFlow
+### 2. Instalasi Mininet + OpenFlow
 
 Mininet adalah sebuah emulator jaringan yang dapat digunakan untuk membuat sebuah jaringan virtual (dapat terdiri atas host, switch, router, controller, dan link). host pada mininet menjalankan software Linux standar dan switch pada mininet mendukung protokol OpenFlow yang sangat fleksibel untuk dimodifikasi dan mendukung Software-Defined Networking (SDN).
 
@@ -41,7 +41,7 @@ git clone https://github.com/mininet/mininet
 mininet/util/install.sh -nfv
 ```
 
-## 3. Instalasi RYU
+### 3. Instalasi RYU
 
 Ryu adalah sebuah framework software untuk SDN Controller dan pengembangan aplikasi SDN dan menyediakan beragam komponen software lengkap dengan API yang memudahkan pengembang melakukan pembuatan aplikasi berbasis controller SDN.
 
@@ -55,7 +55,7 @@ cd
 
 Setelah instal Flowmanager, lakukan rebooting Linux untuk membuat lingkungan operasional Python, Mininet, Ryu dan OpenFlow dapat berjalan dengan baik.
 
-## 4. Percobaan Sederhana
+### 4. Percobaan Sederhana
 
 - Interaksi dengan Host dan Switch
   - ![](ss/9.png)
@@ -125,3 +125,122 @@ PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.065/0.166/0.267/0.101 ms
 mininet>
 ```
+
+## B. Membuat Custom Topology Mininet
+
+Pada bagian ini kita akan membuat custom topologi dengan menggunakan mininet
+
+### 1. Masuk pada direktori Mininet dan Custom
+
+- Gunakan perintah dibawah untuk masuk ke direktori mininet
+
+```
+cd mininet/custom
+```
+
+### 2. Masuk dan edit file custom_topo_2sw2h.py
+
+- Edit file dan masukan kode program
+
+```
+nano custom_topo_2sw2h.py
+```
+
+- Kode program (Perhatikan penggunaan spasi dan tab karena berpengaruh)
+
+```
+#!/usr/bin/env python
+" Custom Topology "
+
+from mininet.topo import Topo
+from mininet.log import setLogLevel, info
+
+class MyTopo( Topo ):
+    def addSwitch(self, name, **opts ):
+      kwargs = { 'protocols' : 'OpenFlow13'}
+      kwargs.update( opts )
+      return super(MyTopo, self).addSwitch( name, **kwargs )
+
+    def __init__( self ):
+    # Inisialisasi Topology
+      Topo.__init__( self )
+
+      # Tambahkan node, switch, dan host
+      info( '*** Add switches\n')
+      s1 = self.addSwitch('s1')
+      s2 = self.addSwitch('s2')
+      # ....
+      info( '*** Add hosts\n')
+      h1 = self.addHost('h1', ip='10.1.0.1/24')
+      h2 = self.addHost('h2', ip='10.1.0.2/24')
+      # ...
+      info( '*** Add links\n’)
+      self.addLink(s1, h1, port1=1, port2=1)
+      self.addLink(s1, s2, port1=2, port2=1)
+      self.addLink(s2, h2, port1=2, port2=1)
+      # ....
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+```
+
+- ![](ss/10.png)
+
+### 3. Membuat Custom Topologi 3 switch dan 6 host
+
+- Gunakan perintah dibawah untuk masuk ke direktori mininet
+
+```
+cd mininet/custom
+```
+
+### 4. Masuk dan edit file custom_topo_3sw6h.py
+
+- Edit file dan masukan kode program
+
+```
+nano custom_topo_3sw6h.py
+```
+
+- Kode program (Perhatikan penggunaan spasi dan tab karena berpengaruh), lalu secara manual menulis flow pada masing-masing switch seperti kode program dibawah
+
+```
+#!/usr/bin/env python
+from mininet.topo import Topo
+from mininet.log import setLogLevel, info
+class MyTopo( Topo ):
+   def addSwitch(self, name, **opts ):
+     kwargs = { 'protocols' : 'OpenFlow13'}
+     kwargs.update( opts )
+     return super(MyTopo, self).addSwitch( name, **kwargs )
+   def __init__( self ):
+    "Create MyTopo topology..."
+
+     # Inisialisasi Topology
+     Topo.__init__( self )
+     # Tambahkan node, switch, dan host
+     info( '*** Add switches\n')
+     s1 = self.addSwitch('s1')
+     s2 = self.addSwitch('s2')
+     s3 = self.addSwitch('s3')
+     info( '*** Add hosts\n')
+     h1 = self.addHost('h1', ip='10.1.0.1/24')
+     h2 = self.addHost('h2', ip='10.1.0.2/24')
+     h3 = self.addHost('h3', ip='10.1.0.3/24')
+     h4 = self.addHost('h4', ip='10.1.0.4/24')
+     h5 = self.addHost('h5', ip='10.1.0.5/24')
+     h6 = self.addHost('h6', ip='10.1.0.6/24')
+
+
+     info( '*** Add links\n')
+     self.addLink(s1, s2)
+     self.addLink(s1, s3)
+     self.addLink(s2, s3)
+     self.addLink(s1, h1)
+     self.addLink(s1, h2)
+     self.addLink(s2, h3)
+     self.addLink(s2, h4)
+     self.addLink(s3, h5)
+     self.addLink(s3, h6)
+topos = { 'mytopo': ( lambda: MyTopo() ) }
+```
+
+- ![](ss/11.png)
