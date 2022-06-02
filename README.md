@@ -59,7 +59,7 @@ Setelah instal Flowmanager, lakukan rebooting Linux untuk membuat lingkungan ope
 
 - Interaksi dengan Host dan Switch
   - ![](ss/9.png)
-  - ![](ss/8.png)
+  - ![](ss/a.png)
 
 ```
 sudo mn
@@ -203,7 +203,7 @@ mininet> sh ovs-ofctl add-flow s2 -O OpenFlow13 "in_port=2,action=output:1"
 mininet> h1 ping -c2 h2
 ```
 
-- ![](ss/10.png)
+- ![](ss/b.png)
 
 ### 3. Membuat Custom Topologi 3 switch dan 6 host
 
@@ -270,4 +270,4 @@ topos = { 'mytopo': ( lambda: MyTopo() ) }
 sudo mn --controller=none --custom custom_topo_3sw6h.py --topo mytopo --mac --arp
 ```
 
-- ![](ss/11.png)
+- ![](ss/c.png)
