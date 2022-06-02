@@ -271,3 +271,75 @@ sudo mn --controller=none --custom custom_topo_3sw6h.py --topo mytopo --mac --ar
 ```
 
 - ![](ss/c.png)
+
+## C. Membuat Server Load Balanceing
+
+Load Balancing adalah suatu jaringan komputer yang menggunakan metode untuk mendistribusikan beban kerjaan pada dua atau bahkan lebih suatu koneksi jaringan secara seimbang agar pekerjaan dapat berjalan optimal dan tidak overload (kelebihan) beban pada salah satu jalur koneksi.
+
+### 1. Clone repository pada github
+
+- lakukan cloneing dengan perintah dibawah, setelah berhasil cloneing anda akan mendapat 2 buah direktori yang pertama direktori LoadBalancing dan yang kedua adalah SPF dimana kita saat ini akan menggunakan direktori LB (LoadBalancer)
+
+```
+git clone https://github.com/abazh/learn_sdn
+```
+
+- Masuk ke akun AWS dan masuk ke terminal, kemudian masuk ke direktori LB dengan perintah
+
+```
+cd learn_sdn/LB
+```
+
+- Kemdian tulis perintah dibawah agar dapat membagi terminal menjadi 2 bagian, untuk membuka terminal baru disebelah tekan (ctrl+b %), untuk berpindah terminal tekan (ctrl+b ;)
+
+```
+tmux
+```
+
+- Pada terminal 1 tulis perintah
+
+```
+sudo python3 topo_lb.py
+```
+
+- Pada terminal 2 tulis perintah
+
+```
+ryu-manager rr_lb.py
+```
+
+- Jika sudah berjalan tampilannya akan menjadi seperti berikut
+- ![](ss/12.png)
+- Pada terminal 1, h1 menjadi web client, sedangkan h2, h3, h4 harus menjalankan server dengan perintah
+
+```
+mininet> h2 python3 -m http.server 80 &
+mininet> h3 python3 -m http.server 80 &
+mininet> h4 python3 -m http.server 80 &
+```
+
+- ![](ss/13.png)
+- Lalu tulis perintah dibawah untuk menunjukkan flow
+  dengan isi yang diteruskan ke controller
+
+```
+dpctl dump-flows -O OpenFlow13
+```
+
+- Lalu gunakan h1 sebagai client server dengan perintah
+
+```
+h1 curl 10.0.0.100
+```
+
+- Pada terminal 1 dilakukan percobaan dengan perintah "h1 curl 10.0.0.100" seperti di atas, dengan hasil pada terminal 2 menunjukan bahwa perintah pertama server yang dipilih adalah server 10.0.0.2, lalu pada perintah yang kedua yang terpilih server 10.0.0.3, kemudian pada perintah ketiga server 10.0.0.4 yang terpilih
+- ![](ss/16.png)
+- Kemudian ketik perintah di bawah pada terminal 1 untuk melihat flows, setelah muncul dapat dilihat ada beberapa flows yang berjalan mengirimkan paket dengan output pada eth1, eth2, eth3, eth 4.
+
+```
+dpctl dump-flows –o openflow13
+```
+
+- Sederhananya h1 seperti selalu terhubung dengan 10.0.0.100, karena setiap paket yang
+  dikirim dilakukan translasi
+- ![](ss/17.png)
