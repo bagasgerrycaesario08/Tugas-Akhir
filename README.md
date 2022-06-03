@@ -10,11 +10,11 @@
   - Instance type : t2.medium
     - ![](ss/3.png)
   - Key pair : vockey
-    - ![](ss/4.png)
+    - ![](ss/ok.png)
   - Edit Network settings : allow SSH, allow HTTP, allow HTTPS, allow TCP port 8080, allow TCP port 8081
     - ![](ss/5.png)
     - ![](ss/6.png)
-  - Configure storage : 30 GiB, gp3
+  - Configure storage : 30 GB, gp3
     - ![](ss/7.png)
 
 ### 1. Langkah Pertama Lakukan Update
@@ -94,7 +94,7 @@ mininet> dump
 - Tes koneksi antar Host
 
 ```
-ubuntu@ip-172-31-85-120:~$ sudo mn
+
 *** Creating network
 *** Adding controller
 *** Adding hosts:
