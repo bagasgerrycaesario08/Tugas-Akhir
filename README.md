@@ -276,8 +276,6 @@ sudo mn --controller=none --custom custom_topo_3sw6h.py --topo mytopo --mac --ar
 
 Load Balancing adalah suatu jaringan komputer yang menggunakan metode untuk mendistribusikan beban kerjaan pada dua atau bahkan lebih suatu koneksi jaringan secara seimbang agar pekerjaan dapat berjalan optimal dan tidak overload (kelebihan) beban pada salah satu jalur koneksi.
 
-### 1. Clone repository pada github
-
 - lakukan cloneing dengan perintah dibawah, setelah berhasil cloneing anda akan mendapat 2 buah direktori yang pertama direktori LoadBalancing dan yang kedua adalah SPF dimana kita saat ini akan menggunakan direktori LB (LoadBalancer)
 
 ```
@@ -343,3 +341,61 @@ dpctl dump-flows –o openflow13
 - Sederhananya h1 seperti selalu terhubung dengan 10.0.0.100, karena setiap paket yang
   dikirim dilakukan translasi
 - ![](ss/17.png)
+
+## D. Membuat Aplikasi Ryu Shortest Path Routing
+
+- Dalam perutean jalur terpendek, jaringan komunikasi topologi didefinisikan menggunakan grafik berbobot berarah. Node dalam grafik mendefinisikan komponen switching dan busur berarah dalam grafik mendefinisikan koneksi komunikasi antara komponen switching. Setiap busur memiliki bobot yang menentukan biaya berbagi paket antara dua node dalam arah tertentu.
+- Pertama jika anda sudah mengikuti percobaan-percobaan diatas anda kemungkinan sudah memiliki direktori "learn_sdn/SPF", jika belum lakukan cloneing
+
+```
+git clone https://github.com/abazh/learn_sdn
+```
+
+- Masuk ke direktori SPF
+
+```
+cd learn_sdn/SPF
+```
+
+- Kemudian jalankan "tmux" agar dapat membuat 2 terminal console, untuk membuka terminal baru disebelah tekan (ctrl+b %), untuk berpindah terminal tekan (ctrl+b ;)
+
+```
+tmux
+```
+
+- Pada Terminal Console 1 jalankan
+
+```
+ryu-manager --observe-links dijkstra_Ryu_controller.py
+```
+
+- Pada Terminal Console 2 jalankan “
+
+```
+sudo python3 topo-spf_lab.py
+```
+
+- Pada terminal 1 memantau semua proses yang berjalan, pada terminal 2, 6 switch yang dibuat telah dideteksi dan di terminal 1 terlihat bahwa switch
+  telah terhubung ke controller namun belum ada aktivitas apapun namun switch ini terhubung
+  dengan controller
+- ![](ss/18.png)
+- Lanjutkan dengan cek semua konektivitas dengan perintah
+
+```
+h1 ping -c 4 h4
+h5 ping -c 4 h6
+```
+
+- Pada terminal 2 terlihat PING mendapatkana replay, yang artinya h1 dan h4, h5 dan h6 saling terhubung.
+- ![](ss/19.png)
+- lakukan "pingall" pada terminal 2
+
+```
+pingall
+```
+
+- Pada terminal 1 akan terjadi suatu proses yang berjalan, dan pada terminal 2 masing masing host tidak bisa langsung bertemu karena pertama kali masih menjalankan komputasi, maka ulangi perintah "pingall" beberapa kali hingga semua host terhubung, saat sudah terhubung hasilnya seperti dibawah, yang artinya semua flow sudah tertanam pada setiap switch sesuai topologi dan jumlah switch, host.
+- ![](ss/20.png)
+- ![](ss/21.1.png)
+
+# Terimakasih telah membaca, mohon maaf apabila ada banyak kekurangan, Semoga Ilmu ini Dapat bermanfaat.
